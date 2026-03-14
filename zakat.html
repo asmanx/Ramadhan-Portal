@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ramadhan Portal - Kalkulator Zakat</title>
-    <link rel="stylesheet" href="style/semua.css">
 
     <style>
         body {
@@ -345,16 +344,72 @@
     </footer>
 
     <script>
+        let currentJenisZakat = "penghasilan";
+
         function toggleMenu() {
             document.getElementById("navMenu").classList.toggle("show");
         }
 
-        function pilihZakat(val) {
-            document.getElementById('formPenghasilan').style.display = (val === 'penghasilan') ? 'block' : 'none';
-            document.getElementById('formEmas').style.display = (val === 'emas') ? 'block' : 'none';
+        function pilihZakat(jenis) {
+            currentJenisZakat = jenis;
+            const formPenghasilan = document.getElementById("formPenghasilan");
+            const formEmas = document.getElementById("formEmas");
+
+            if (jenis === "penghasilan") {
+                formPenghasilan.style.display = "block";
+                formEmas.style.display = "none";
+            } else {
+                formPenghasilan.style.display = "none";
+                formEmas.style.display = "block";
+            }
+        }
+
+        function hitungZakat() {
+            let hargaEmas;
+
+            if (currentJenisZakat === "penghasilan") {
+                hargaEmas = parseFloat(document.getElementById("hargaEmas").value);
+            } else {
+                hargaEmas = parseFloat(document.getElementById("hargaEmasEmas").value);
+            }
+
+            if (!hargaEmas || hargaEmas <= 0) {
+                alert("Masukkan harga emas per gram saat ini.");
+                return;
+            }
+
+            let nisab = 0;
+            let total = 0;
+
+            if (currentJenisZakat === "penghasilan") {
+                nisab = (hargaEmas * 85) / 12;
+                let gaji = parseFloat(document.getElementById("gaji").value) || 0;
+                let lain = parseFloat(document.getElementById("lain").value) || 0;
+                total = gaji + lain;
+            } else {
+                // Nisab Emas adalah 85 gram
+                nisab = hargaEmas * 85;
+                let emasGram = parseFloat(document.getElementById("emas").value) || 0;
+                total = emasGram * hargaEmas;
+            }
+
+            let status = total >= nisab ? "Wajib Zakat" : "Tidak Wajib";
+            let zakat = total >= nisab ? total * 0.025 : 0;
+
+            document.getElementById("total").innerText = "Rp " + total.toLocaleString('id-ID');
+            document.getElementById("nisab").innerText = "Rp " + Math.round(nisab).toLocaleString('id-ID');
+            document.getElementById("status").innerText = status;
+            document.getElementById("zakat").innerText = "Rp " + Math.round(zakat).toLocaleString('id-ID');
+        }
+
+        function resetForm() {
+            document.querySelectorAll("input").forEach(i => i.value = "");
+            document.getElementById("total").innerText = "Rp -";
+            document.getElementById("nisab").innerText = "Rp -";
+            document.getElementById("status").innerText = "-";
+            document.getElementById("zakat").innerText = "Rp 0";
         }
     </script>
-    <script src="script/zakat.js"></script>
 </body>
 
 </html>
