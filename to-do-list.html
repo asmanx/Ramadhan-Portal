@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramadhan Portal - Dashboard Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(rgba(15, 81, 50, 0.85), rgba(15, 81, 50, 0.85)),
+                url("https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=1400&q=80");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f5132, #1a5d3b);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border-bottom: 3px solid #d4af37;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .header-full {
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            background-image: url('img/logo-ramadhan.png');
+            background-size: cover;
+            background-position: center;
+            height: 90px;
+            width: 90px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .judul-header h2 {
+            color: #fff;
+            font-size: 28px;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .menu {
+            display: none;
+            font-size: 30px;
+            cursor: pointer;
+            position: absolute;
+            left: 25px;
+            top: 25px;
+            color: white;
+            transition: 0.3s;
+            z-index: 2001;
+        }
+
+        .button-navigasi {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .nav-item {
+            color: #fff;
+            border-radius: 25px;
+            padding: 10px 25px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #ffc107;
+            color: #0f5132;
+            border-color: #ffc107;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .all {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 900px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .global-date-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+        }
+
+        .date-btn {
+            background: #0f5132;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .date-btn:hover {
+            background: #1a5d3b;
+        }
+
+        #globalToday {
+            font-weight: bold;
+            color: #0f5132;
+            font-size: 1.1rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            box-sizing: border-box;
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 12px;
+            margin-top: 0;
+            color: #0f5132;
+        }
+
+        /* Sholat */
+        .sholat-summary {
+            background: linear-gradient(135deg, #198754, #157347);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .prayer-item {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #eee;
+        }
+
+        .sholat-bar-bg {
+            height: 8px;
+            background: #ddd;
+            flex: 1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .sholat-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: #ffc107;
+            transition: 0.5s ease-out;
+        }
+
+        /* Quran */
+        .quran-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: conic-gradient(#ffc107 0deg, #e0e0e0 0deg);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quran-circle-inner {
+            width: 110px;
+            height: 110px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quran-input-group {
+            margin-bottom: 15px;
+        }
+
+        .quran-input-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .quran-input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        .quran-input-group input:focus {
+            border-color: #ffc107;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 193, 7, 0.3);
+        }
+
+        /* Puasa */
+        .puasa-calendar {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .puasa-day {
+            height: 38px;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .puasa-day:hover {
+            background: #e0e0e0;
+        }
+
+        .puasa-day.selected {
+            border-color: #0f5132;
+            font-weight: bold;
+            background: #e8f5e9;
+            color: #0f5132;
+        }
+
+        .puasa-day.fasted {
+            background: #198754;
+            color: white;
+        }
+
+        .puasa-day.notfast {
+            background: #dc3545;
+            color: white;
+        }
+
+        .puasa-progress {
+            height: 14px;
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 12px 0;
+            box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        #puasaBar {
+            height: 100%;
+            background: #ffc107;
+            width: 0%;
+            transition: 0.5s ease-out;
+        }
+
+        /* Zikir */
+        .zikir-display {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            margin: 15px auto;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #0f5132;
+            border: 6px solid #d4af37;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .zikir-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-zikir-add {
+            width: 75px;
+            height: 75px;
+            margin-left: 50px;
+            border-radius: 50%;
+            background: #0f5132;
+            color: white;
+            border: none;
+            font-size: 2.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: 0.2s;
+        }
+
+        .btn-zikir-add:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-zikir-reset {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #d4af37;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-zikir-reset:hover {
+            background: #c19b2e;
+        }
+
+        /* COMMON BUTTONS */
+        .save-btn-all {
+            width: 100%;
+            padding: 14px;
+            background: #0f5132;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(15, 81, 50, 0.2);
+        }
+
+        .save-btn-all:hover {
+            background: #157347;
+            box-shadow: 0 6px 15px rgba(15, 81, 50, 0.3);
+        }
+
+        footer {
+            width: 100%;
+            background: #0a3d25;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 4px solid #d4af37;
+            margin-top: auto;
+        }
+
+        .footer-inner {
+            padding: 0 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /*MOBILE */
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .menu {
+                display: block;
+            }
+
+            .button-navigasi {
+                display: none;
+                flex-direction: column;
+                background: #ffffff;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 10px 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                z-index: 2000;
+                gap: 0;
+            }
+
+            .button-navigasi.show {
+                display: flex;
+            }
+
+            .nav-item {
+                color: #0f5132;
+                border: none;
+                background: transparent;
+                border-radius: 0;
+                padding: 15px 25px;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+            }
+
+            .nav-item.active {
+                background: #e8f5e9;
+                color: #0f5132;
+                border-left: 5px solid #0f5132;
+                border-bottom: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header-full">
+        <div class="menu" onclick="toggleMenu()">☰</div>
+        <div class="logo"></div>
+        <div class="judul-header">
+            <h2>RAMADHAN PORTAL</h2>
+        </div>
+        <div id="navMenu" class="button-navigasi">
+            <a href="index.html" class="nav-item">Doa Puasa</a>
+            <a href="zikir.html" class="nav-item">Hitung Zikir</a>
+            <a href="zakat.html" class="nav-item">Kalkulator Zakat</a>
+            <a href="imsak.html" class="nav-item">Jadwal Imsakiyah</a>
+            <a href="to-do-list.html" class="nav-item active">To-Do-List</a>
+        </div>
+    </header>
+
+    <main class="all">
+        <div class="global-date-container">
+            <button class="date-btn" onclick="changeGlobalDate(-1)">◀</button>
+            <span id="globalToday">Memuat Tanggal...</span>
+            <button class="date-btn" onclick="changeGlobalDate(1)">▶</button>
+        </div>
+
+        <div class="main-grid">
+            <div class="card">
+                <h2>Sholat Tracker</h2>
+                <div class="sholat-summary">
+                    <div
+                        style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; font-size: 1.1rem;">
+                        <span id="sholatPercent">0%</span>
+                        <span id="sholatDone">0</span>5
+                    </div>
+                    <div id="sholatStatus" style="font-size: 13px; opacity: 0.9;">Semangat Ibadahnya!</div>
+                </div>
+                <div id="sholatList"></div>
+                <button class="save-btn-all" onclick="saveSholat()">Simpan Sholat</button>
+            </div>
+
+            <div class="card">
+                <h2>Al-Quran Tracker</h2>
+                <div class="quran-circle" id="quranCircle">
+                    <div class="quran-circle-inner">
+                        <b id="quranPercent" style="font-size: 1.4rem; color: #0f5132;">0%</b>
+                        <small id="quranStatus"
+                            style="font-size: 10px; color: #666; text-align: center; max-width: 80px;">Mulai!</small>
+                    </div>
+                </div>
+                <div class="quran-input-group">
+                    <label>Target Halaman Hari Ini</label>
+                    <input type="number" id="quranTarget" oninput="updateQuranUI()" placeholder="Contoh: 20">
+                </div>
+                <div class="quran-input-group">
+                    <label>Halaman yang Sudah Dibaca</label>
+                    <input type="number" id="quranRead" oninput="updateQuranUI()" placeholder="Contoh: 5">
+                </div>
+                <button class="save-btn-all" onclick="saveQuran()">Simpan Progres</button>
+            </div>
+
+            <div class="card">
+                <h2>Puasa Tracker</h2>
+                <div id="puasaSelectedDay"
+                    style="text-align: center; font-weight: bold; margin-bottom: 12px; color: #0f5132; font-size: 1.1rem;">
+                    Hari ke-1</div>
+                <div class="puasa-calendar" id="puasaCalendar"></div>
+                <div style="font-size: 0.85rem; color: #666; margin-top: 15px;">Total Puasa Ramadhan:</div>
+                <div class="puasa-progress">
+                    <div id="puasaBar"></div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 25px; margin-top: 15px; font-weight: 500;">
+                    <label style="cursor: pointer; color: #dc3545;"><input type="radio" name="fast" id="fastNo">
+                        Batal/Tidak</label>
+                    <label style="cursor: pointer; color: #198754;"><input type="radio" name="fast" id="fastYes">
+                        Puasa</label>
+                </div>
+                <button class="save-btn-all" onclick="savePuasa()">Simpan Status Puasa</button>
+            </div>
+
+            <div class="card">
+                <h2>Tasbih Digital</h2>
+                <div class="zikir-display" id="zikirCount">0</div>
+                <div
+                    style="text-align: center; margin-bottom: 15px; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #eee;">
+                    <small style="color: #666;">Target: <span id="zikirTargetVal"
+                            style="font-weight: bold; color: #0f5132;">0</span></small><br>
+                    <input type="number" id="zikirInput" placeholder="Set target"
+                        style="width: 90px; padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin-top: 5px;">
+                    <button onclick="setZikirTarget()"
+                        style="padding: 8px 12px; background: #d4af37; border:none; color:white; border-radius: 5px; cursor: pointer; font-weight: bold; margin-left: 5px;">Set</button>
+                </div>
+                <div class="zikir-btns">
+                    <button class="btn-zikir-add" onclick="addZikir()">+</button>
+                    <button class="btn-zikir-reset" onclick="resetZikir()">R</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <p style="margin: 0; font-weight: bold;">&copy; 2026 Ramadhan Portal</p>
+            <p style="margin: 5px 0 0; font-size: 0.8rem; opacity: 0.6;">Menemani Ibadah Ramadhan Anda</p>
+        </div>
+    </footer>
+
+    <script>
+        let globalDate = new Date();
+        const prayers = ["🌁 Subuh", "🌄 Dzuhur", "🌅 Ashar", "🌇 Maghrib", "🌆 Isya"];
+        let selectedPuasaDay = 1;
+        let puasaData = JSON.parse(localStorage.getItem("ramadhan_fast")) || new Array(31).fill(null);
+
+        // UTILS
+        function getIsoDate() { return globalDate.toISOString().split('T')[0]; }
+        function formatDateID(date) {
+            return date.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+        }
+
+        function changeGlobalDate(step) {
+            globalDate.setDate(globalDate.getDate() + step);
+            initAll();
+        }
+
+        function toggleMenu() {
+            document.getElementById("navMenu").classList.toggle("show");
+        }
+
+        // --- 1. SHOLAT ---
+        function renderSholat() {
+            const container = document.getElementById("sholatList");
+            container.innerHTML = "";
+            prayers.forEach((p, i) => {
+                container.innerHTML += `
+                    <div class="prayer-item">
+                        <span style="min-width: 75px; font-weight: 500; color: #333;">${p}</span>
+                        <div class="sholat-bar-bg"><div class="sholat-bar-fill" id="sholatBar${i}"></div></div>
+                        <input type="checkbox" id="sholatCheck${i}" onchange="updateSholatUI()" style="width: 22px; height: 22px; cursor: pointer;">
+                    </div>`;
+            });
+            loadSholat();
+        }
+
+        function updateSholatUI() {
+            let done = 0;
+            prayers.forEach((_, i) => {
+                const cb = document.getElementById(`sholatCheck${i}`);
+                const bar = document.getElementById(`sholatBar${i}`);
+                if (cb.checked) { done++; bar.style.width = "100%"; }
+                else { bar.style.width = "0%"; }
+            });
+            let percent = Math.round((done / 5) * 100);
+            document.getElementById("sholatPercent").innerText = percent + "%";
+            document.getElementById("sholatDone").innerText = done;
+            document.getElementById("sholatStatus").innerText = percent === 100 ? "MasyaAllah, Lengkap!" : "Terus semangat!";
+        }
+
+        function saveSholat() {
+            let states = prayers.map((_, i) => document.getElementById(`sholatCheck${i}`).checked);
+            localStorage.setItem("sholat_" + getIsoDate(), JSON.stringify(states));
+            alert("Data sholat tanggal " + globalDate.getDate() + " tersimpan!");
+        }
+
+        function loadSholat() {
+            let data = JSON.parse(localStorage.getItem("sholat_" + getIsoDate())) || [];
+            prayers.forEach((_, i) => {
+                if (document.getElementById(`sholatCheck${i}`)) {
+                    document.getElementById(`sholatCheck${i}`).checked = data[i] || false;
+                }
+            });
+            updateSholatUI();
+        }
+
+        // --- 2. QURAN ---
+        function updateQuranUI() {
+            let target = parseInt(document.getElementById("quranTarget").value) || 0;
+            let read = parseInt(document.getElementById("quranRead").value) || 0;
+            let percent = target > 0 ? Math.min(Math.round((read / target) * 100), 100) : 0;
+
+            document.getElementById("quranPercent").innerText = percent + "%";
+            document.getElementById("quranCircle").style.background = `conic-gradient(#ffc107 ${percent * 3.6}deg, #e0e0e0 0deg)`;
+            document.getElementById("quranStatus").innerText = percent === 100 ? "Target Tercapai!" : "Satu ayat sangat berharga";
+        }
+
+        function saveQuran() {
+            let data = {
+                target: document.getElementById("quranTarget").value,
+                read: document.getElementById("quranRead").value
+            };
+            localStorage.setItem("quran_" + getIsoDate(), JSON.stringify(data));
+            alert("Progress Quran hari ini tersimpan!");
+        }
+
+        function loadQuran() {
+            let data = JSON.parse(localStorage.getItem("quran_" + getIsoDate())) || { target: "", read: "" };
+            document.getElementById("quranTarget").value = data.target;
+            document.getElementById("quranRead").value = data.read;
+            updateQuranUI();
+        }
+
+        // --- 3. PUASA ---
+        function renderPuasa() {
+            const cal = document.getElementById("puasaCalendar");
+            cal.innerHTML = "";
+            for (let i = 1; i <= 30; i++) {
+                let div = document.createElement("div");
+                div.className = "puasa-day";
+                if (puasaData[i] === "yes") div.classList.add("fasted");
+                if (puasaData[i] === "no") div.classList.add("notfast");
+                if (i === selectedPuasaDay) div.classList.add("selected");
+                div.innerText = i;
+                div.onclick = () => { selectedPuasaDay = i; renderPuasa(); updatePuasaSelection(); };
+                cal.appendChild(div);
+            }
+            updatePuasaProgress();
+        }
+
+        function updatePuasaSelection() {
+            document.getElementById("puasaSelectedDay").innerText = "Hari ke-" + selectedPuasaDay;
+            document.getElementById("fastYes").checked = puasaData[selectedPuasaDay] === "yes";
+            document.getElementById("fastNo").checked = puasaData[selectedPuasaDay] === "no";
+        }
+
+        function savePuasa() {
+            if (document.getElementById("fastYes").checked) puasaData[selectedPuasaDay] = "yes";
+            else if (document.getElementById("fastNo").checked) puasaData[selectedPuasaDay] = "no";
+            else puasaData[selectedPuasaDay] = null;
+
+            localStorage.setItem("ramadhan_fast", JSON.stringify(puasaData));
+            renderPuasa();
+            alert("Status puasa hari ke-" + selectedPuasaDay + " disimpan!");
+        }
+
+        function updatePuasaProgress() {
+            let done = puasaData.filter(x => x === "yes").length;
+            document.getElementById("puasaBar").style.width = (done / 30 * 100) + "%";
+        }
+
+        // --- 4. ZIKIR ---
+        let zikirCount = 0;
+        let zikirTarget = 0;
+
+        function setZikirTarget() {
+            zikirTarget = parseInt(document.getElementById("zikirInput").value) || 0;
+            document.getElementById("zikirTargetVal").innerText = zikirTarget;
+        }
+
+        function addZikir() {
+            zikirCount++;
+            document.getElementById("zikirCount").innerText = zikirCount;
+            if (zikirTarget > 0 && zikirCount === zikirTarget) {
+                if (navigator.vibrate) navigator.vibrate(200); // Getaran jika didukung
+                alert("Alhamdulillah, target zikir tercapai!");
+            }
+        }
+
+        function resetZikir() {
+            if (confirm("Reset hitungan zikir kembali ke 0?")) {
+                zikirCount = 0;
+                document.getElementById("zikirCount").innerText = 0;
+            }
+        }
+
+        // INITIALIZE ALL
+        function initAll() {
+            document.getElementById("navMenu").classList.remove("show");
+
+            document.getElementById("globalToday").innerText = formatDateID(globalDate);
+            renderSholat();
+            loadQuran();
+            renderPuasa();
+            updatePuasaSelection();
+
+            zikirCount = 0;
+            document.getElementById("zikirCount").innerText = 0;
+        }
+
+        window.onload = initAll;
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramadhan Portal - Doa Puasa</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(rgba(15, 81, 50, 0.85), rgba(15, 81, 50, 0.85)), url("https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=1400&q=80");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f5132, #1a5d3b);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border-bottom: 3px solid #d4af37;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .header-full {
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            background-image: url('img/logo-ramadhan.png');
+            background-size: cover;
+            background-position: center;
+            height: 90px;
+            width: 90px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .judul-header h2 {
+            color: #fff;
+            font-size: 28px;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .menu {
+            display: none;
+            font-size: 30px;
+            cursor: pointer;
+            position: absolute;
+            left: 25px;
+            top: 25px;
+            color: white;
+            transition: 0.3s;
+            z-index: 2001;
+        }
+
+        .button-navigasi {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .nav-item {
+            color: #fff;
+            border-radius: 25px;
+            padding: 10px 25px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #ffc107;
+            color: #0f5132;
+            border-color: #ffc107;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+            transform: translateY(-2px);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 10px auto;
+            padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #d4af37;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        .sub1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .doa {
+            background: rgba(255, 255, 255, 0.97);
+            color: #333;
+            border-radius: 15px;
+            padding: 30px;
+            border-top: 5px solid #d4af37;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .doa h3 {
+            color: #0f5132;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .arab {
+            font-size: 28px;
+            text-align: right;
+            margin: 20px 0;
+            font-family: 'Traditional Arabic', serif;
+            line-height: 1.8;
+        }
+
+        .arti {
+            font-style: italic;
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        /* KEUTAMAAN */
+        .sub2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .keutamaan {
+            background: linear-gradient(135deg, #d4af37, #ffc107);
+            color: #0f5132;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .keutamaan h4 {
+            margin-top: 0;
+        }
+
+        footer {
+            width: 100%;
+            background: #0a3d25;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 4px solid #d4af37;
+            margin-top: auto;
+        }
+
+        .footer-inner {
+            padding: 0 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @media(max-width:768px) {
+
+            .sub1 {
+                grid-template-columns: 1fr;
+            }
+
+            .menu {
+                display: block;
+            }
+
+            .button-navigasi {
+                display: none;
+                flex-direction: column;
+                background: #ffffff;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 10px 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                z-index: 2000;
+                gap: 0;
+            }
+
+            .button-navigasi.show {
+                display: flex;
+            }
+
+            .nav-item {
+                color: #0f5132;
+                border: none;
+                background: transparent;
+                border-radius: 0;
+                padding: 15px 25px;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+            }
+
+            .nav-item.active {
+                background: #e8f5e9;
+                color: #0f5132;
+                border-left: 5px solid #0f5132;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header-full">
+
+        <div class="menu" onclick="toggleMenu()">☰</div>
+
+        <div class="logo"></div>
+
+        <div class="judul-header">
+            <h2>RAMADHAN PORTAL</h2>
+        </div>
+
+        <div id="navMenu" class="button-navigasi">
+            <a href="index.html" class="nav-item active">Doa Puasa</a>
+            <a href="zikir.html" class="nav-item">Hitung Zikir</a>
+            <a href="zakat.html" class="nav-item">Kalkulator Zakat</a>
+            <a href="imsak.html" class="nav-item">Jadwal Imsakiyah</a>
+            <a href="to-do-list.html" class="nav-item">To-Do-List</a>
+        </div>
+
+    </header>
+
+    <main>
+
+        <h2 class="section-title">Niat & Doa Puasa</h2>
+
+        <section class="sub1">
+
+            <div class="doa">
+
+                <h3>Niat Puasa Ramadhan</h3>
+
+                <p class="arab">
+                    نَوَيْتُ صَوْمَ غَدٍ عَنْ أَدَاءِ فَرْضِ شَهْرِ رَمَضَانِ هَذِهِ السَّنَةِ لِلَّهِ تَعَالَى
+                </p>
+
+                <p class="arti">
+                    "Aku berniat puasa esok hari untuk menunaikan fardu di bulan Ramadan tahun ini karena Allah Ta'ala."
+                </p>
+
+            </div>
+
+            <div class="doa">
+
+                <h3>Doa Berbuka Puasa</h3>
+
+                <p class="arab">
+                    اَللّٰهُمَّ لَكَ صُمْتُ وَبِكَ آمَنْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ
+                </p>
+
+                <p class="arti">
+                    "Ya Allah karena-Mu aku berpuasa, kepada-Mu aku beriman, dan dengan rezeki-Mu aku berbuka."
+                </p>
+
+            </div>
+
+        </section>
+
+        <h2 class="section-title">Keutamaan Ramadhan</h2>
+
+        <section class="sub2">
+
+            <div class="keutamaan">
+                <h4>Bulan Ampunan</h4>
+                <p>
+                    Ramadhan adalah bulan penuh rahmat dan ampunan dimana setiap amal kebaikan dilipatgandakan.
+                </p>
+            </div>
+
+            <div class="keutamaan">
+                <h4>Lailatul Qadar</h4>
+                <p>
+                    Di dalam Ramadhan terdapat malam Lailatul Qadar yang lebih baik dari seribu bulan.
+                </p>
+            </div>
+
+            <div class="keutamaan">
+                <h4>Pintu Surga Dibuka</h4>
+                <p>
+                    Pada bulan Ramadhan pintu-pintu surga dibuka dan pintu neraka ditutup.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <p style="margin: 0; font-weight: bold;">&copy; 2026 Ramadhan Portal</p>
+            <p style="margin: 5px 0 0; font-size: 0.8rem; opacity: 0.6;">Menemani Ibadah Ramadhan Anda</p>
+        </div>
+    </footer>
+
+    <script>
+
+        function toggleMenu() {
+            document.getElementById("navMenu").classList.toggle("show");
+        }
+
+    </script>
+
+</body>
+
+</html>
